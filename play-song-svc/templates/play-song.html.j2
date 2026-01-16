@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Player</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #343a40;
+        }
+
+        .navbar-brand, .navbar-nav .nav-link {
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #343a40;
+        }
+
+        hr {
+            border-color: #343a40;
+            width: 80%;
+        }
+
+        .card {
+            margin-top: 50px;
+        }
+
+        .card-title {
+            color: #343a40;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .form-control {
+            background-color: #f8f9fa;
+            color: #343a40;
+            border: none;
+            border-bottom: 1px solid #ced4da;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            border-color: #007bff;
+            box-shadow: none;
+        }
+
+        .form-control[readonly] {
+            background-color: #f8f9fa;
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">My Music</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/get-catalog">Song Catalog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/upload-song">Upload Song</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/play-song">Get Song</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Song Player</h1>
+        <hr>
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <audio controls>
+                            <source src="songs/{{ song.filename }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Song Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ song.name }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="artist">Artist:</label>
+                        <input type="text" class="form-control" id="artist" name="artist" value="{{ song.artist }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="album">Album:</label>
+                        <input type="text" class="form-control" id="album" name="album" value="{{ song.album }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">Genre:</label>
+                        <input type="text" class="form-control" id="genre" name="genre" value="{{ song.genre }}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <input type="text" class="form-control" id="year" name="year" value="{{ song.year }}" readonly>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
