@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: upload-song-svc
+spec:
+  selector:
+    app: upload-song-depl
+  ports:
+  - port: 5000
+    targetPort: 5000

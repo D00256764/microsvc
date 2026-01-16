@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-depl
+  labels:
+    app: catalog-depl
+spec:
+  selector:
+    matchLabels:
+      app: catalog-depl
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: catalog-depl
+    spec:
+      containers:
+      - name: catalog-depl
+        image: hafsa22/microsvc:catalog-latest
+        imagePullPolicy: Always
+        env:
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: catalog-config
+              key: redis_host
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: catalog-config
+              key: redis_port
+        - name: SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: catalog-config
+              key: service_port
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: password
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+

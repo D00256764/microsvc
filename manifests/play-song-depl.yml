@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: play-song-depl
+  labels:
+    app: play-song-depl
+spec:
+  selector:
+    matchLabels:
+      app: play-song-depl
+  template:
+    metadata:
+      labels:
+        app: play-song-depl
+    spec:
+      containers:
+      - name: play-song-depl
+        image: hafsa22/microsvc:play-song-latest
+        env:
+        - name: CATALOG_URL
+          value: "http://catalog-svc:5000"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000

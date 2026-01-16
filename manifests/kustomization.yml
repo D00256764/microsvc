@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - cat-db-storage.yml
+  - catalog-db-depl.yml
+  - catalog-db-svc.yml
+  - catalog-config.yml
+  - catalog-depl.yml
+  - catalog-svc.yml
+  - db-lb-svc.yml
+  - ingress-gateway.yml
+  - list-search-depl.yml
+  - list-search-svc.yml
+  - play-song-depl.yml
+  - play-song-svc.yml
+  - reg-login-depl.yml
+  - reg-login-svc.yml
+  - secrets.yml
+  - songs-depl.yml
+  - songs-svc.yml
+  - songs-storage.yml
+  - upload-song-depl.yml
+  - upload-song-svc.yml
+  - user-config.yml
+  - userdb-lb-svc.yml
+  - users-db-depl.yml
+  - users-db-svc.yml
+  - users-db-storage.yml
+  - play-rewrite-ingress.yml

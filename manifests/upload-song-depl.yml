@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: upload-song-depl
+  labels:
+    app: upload-song-depl
+spec:
+  selector:
+    matchLabels:
+      app: upload-song-depl
+  template:
+    metadata:
+      labels:
+        app: upload-song-depl
+    spec:
+      volumes:
+        - name: songs-storage
+          persistentVolumeClaim:
+            claimName: songs-pvc
+      initContainers:
+      - name: volume-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /usr/share/nginx/html/songs && chmod -R 777 /usr/share/nginx/html/songs"]
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/songs
+          name: songs-storage
+      containers:
+      - name: upload-song-depl
+        image: hafsa22/microsvc:upload-song-latest
+        env:
+        - name: CATALOG_URL
+          value: "http://catalog-svc:5000"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/songs
+          name: songs-storage

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: list-search-depl
+  labels:
+    app: list-search-depl
+spec:
+  selector:
+    matchLabels:
+      app: list-search-depl
+  template:
+    metadata:
+      labels:
+        app: list-search-depl
+    spec:
+      containers:
+      - name: list-search-depl
+        image: hafsa22/microsvc:list-search-latest
+        env:
+        - name: CATALOG_URL
+          value: "http://catalog-svc:5000"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000

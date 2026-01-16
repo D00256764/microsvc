@@ -1,0 +1,76 @@
+services:
+  catalog:
+    build: ./catalog-svc
+    environment:
+      - REDIS_HOST=catalog-db
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=password
+      - SERVICE_PORT=5000
+    ports:
+      - "6541:5000"
+    volumes:
+      - ./catalog-svc:/home/hafsa/app
+
+  list-search:
+    build: ./list-search-svc
+    ports:
+      - "6542:5000"
+    volumes:
+      - ./list-search-svc:/home/hafsa/app
+  
+  upload-song:
+    build: ./upload-song-svc
+    ports:
+      - "6543:5000"
+    volumes:
+      - ./upload-song-svc:/home/hafsa/app
+      - ./song-storage:/usr/share/nginx/html/songs
+
+  catalog-db:
+    image: redis
+    ports:
+      - "6544:6379"
+    volumes:
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  reg-login:
+    build: ./reg-login-svc
+    environment:
+      - REDIS_HOST=users-db
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=password
+      - SERVICE_PORT=5000
+    ports:
+      - "6548:5000"
+    volumes:
+      - ./reg-login-svc:/home/hafsa/app
+
+  users-db:
+    image: redis
+    ports:
+      - "6551:6379"
+    volumes:
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./song-storage:/usr/share/nginx/html/songs
+
+  play-song:
+    build: ./play-song-svc
+    ports:
+      - "6546:5000"
+    volumes:
+      - ./play-song-svc:/home/hafsa/app
+
+  gateway:
+    image: nginx:latest
+    ports:
+      - "85:80"
+    volumes:
+      - ./gateway/nginx.dev.conf:/etc/nginx/nginx.conf:ro

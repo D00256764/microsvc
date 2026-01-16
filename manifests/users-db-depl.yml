@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-db-depl
+  labels:
+    app: users-db-depl
+spec:
+  selector:
+    matchLabels:
+      app: users-db-depl
+  template:
+    metadata:
+      labels:
+        app: users-db-depl
+    spec:
+      volumes:
+      - name: user-db-storage
+        persistentVolumeClaim:
+          claimName: user-db-pvc
+      - name: config
+        configMap:
+          name: users-config
+      containers:
+      - name: users-db
+        image: redis
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: /data
+          name: user-db-storage
+        - mountPath: /usr/local/etc/redis/redis.conf
+          name: config
+          subPath: redis.conf 
+        args: ["redis-server", "/usr/local/etc/redis/redis.conf"]

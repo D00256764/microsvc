@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: songs-depl
+  labels:
+    app: songs-depl
+spec:
+  selector:
+    matchLabels:
+      app: songs-depl
+  template:
+    metadata:
+      labels:
+        app: songs-depl
+    spec:
+      volumes:
+      - name: songs-storage
+        persistentVolumeClaim:
+          claimName: songs-pvc
+      containers:
+      - name: songs-depl
+        image: nginx
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/songs
+          name: songs-storage

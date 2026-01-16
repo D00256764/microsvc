@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-db-depl
+  labels:
+    app: catalog-db-depl
+spec:
+  selector:
+    matchLabels:
+      app: catalog-db-depl
+  template:
+    metadata:
+      labels:
+        app: catalog-db-depl
+    spec:
+      volumes:
+      - name: cat-db-storage
+        persistentVolumeClaim:
+          claimName: cat-db-pvc
+      - name: config
+        configMap:
+          name: catalog-config
+      containers:
+      - name: catalog-db
+        image: redis
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: /data
+          name: cat-db-storage
+        - mountPath: /usr/local/etc/redis/redis.conf
+          name: config
+          subPath: redis.conf 
+        args: ["redis-server", "/usr/local/etc/redis/redis.conf"]

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reg-login-depl
+  labels:
+    app: reg-login-depl
+spec:
+  selector:
+    matchLabels:
+      app: reg-login-depl
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reg-login-depl
+    spec:
+      containers:
+      - name: reg-login-depl
+        image: hafsa22/microsvc:reg-login-latest
+        imagePullPolicy: Always
+        env:
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: users-config
+              key: redis_host
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: users-config
+              key: redis_port
+        - name: SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: users-config
+              key: service_port
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: password
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
